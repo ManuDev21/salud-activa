@@ -1,0 +1,256 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type Alerta {
+  created_at: DateTime!
+  familiarUsuario: Usuario
+  familiar_id: Int
+  id: Int!
+  leida: Boolean!
+  mensaje: String!
+  tipo: String!
+  usuario: Usuario!
+  usuario_id: Int!
+}
+
+type AuthResponse {
+  token: String!
+  usuario: Usuario!
+}
+
+type CitaMedica {
+  created_at: DateTime!
+  especialidad: String!
+  estado: EstadoCita!
+  fecha_hora: DateTime!
+  id: Int!
+  lugar: String!
+  medico: String!
+  notas: String
+  updated_at: DateTime!
+  usuario: Usuario!
+  usuario_id: Int!
+}
+
+input CreateCitaInput {
+  especialidad: String!
+  estado: EstadoCita! = PENDIENTE
+  fecha_hora: String!
+  lugar: String!
+  medico: String!
+  notas: String
+  usuario_id: Int!
+}
+
+input CreateFamiliarInput {
+  familiar_id: Int!
+  parentesco: String!
+  usuario_id: Int!
+}
+
+input CreateMedicamentoInput {
+  dosis: String!
+  fecha_fin: String!
+  fecha_inicio: String!
+  frecuencia: String!
+  nombre: String!
+  notas: String
+  usuario_id: Int!
+}
+
+input CreateUsuarioInput {
+  apellido: String!
+  contrasena: String!
+  correo: String!
+  fecha_nacimiento: String!
+  nombre: String!
+  rol: RolUsuario! = USUARIO
+}
+
+input CreateVacunaInput {
+  dosis_aplicada: String!
+  fecha_aplicacion: String!
+  nombre: String!
+  notas: String
+  proxima_dosis_fecha: String
+  usuario_id: Int!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+enum EstadoCita {
+  COMPLETADA
+  PENDIENTE
+}
+
+enum EstadoRecordatorio {
+  ACTIVO
+  ENVIADO
+}
+
+type Familiar {
+  created_at: DateTime!
+  familiarUsuario: Usuario!
+  familiar_id: Int!
+  id: Int!
+  parentesco: String!
+  usuario: Usuario!
+  usuario_id: Int!
+}
+
+input LoginInput {
+  contrasena: String!
+  correo: String!
+}
+
+type Medicamento {
+  created_at: DateTime!
+  dosis: String!
+  fecha_fin: String!
+  fecha_inicio: String!
+  frecuencia: String!
+  id: Int!
+  nombre: String!
+  notas: String
+  updated_at: DateTime!
+  usuario: Usuario!
+  usuario_id: Int!
+}
+
+type Mutation {
+  createCita(input: CreateCitaInput!): CitaMedica!
+  createFamiliar(input: CreateFamiliarInput!): Familiar!
+  createMedicamento(input: CreateMedicamentoInput!): Medicamento!
+  createUsuario(input: CreateUsuarioInput!): Usuario!
+  createVacuna(input: CreateVacunaInput!): Vacuna!
+  login(input: LoginInput!): AuthResponse!
+  marcarAlertaLeida(id: Int!): Alerta!
+  marcarRecordatorioEnviado(id: Int!): Recordatorio!
+  register(input: CreateUsuarioInput!): AuthResponse!
+  removeCita(id: Int!): Boolean!
+  removeFamiliar(id: Int!): Boolean!
+  removeMedicamento(id: Int!): Boolean!
+  removeUsuario(id: Int!): Boolean!
+  removeVacuna(id: Int!): Boolean!
+  updateCita(input: UpdateCitaInput!): CitaMedica!
+  updateMedicamento(input: UpdateMedicamentoInput!): Medicamento!
+  updateUsuario(input: UpdateUsuarioInput!): Usuario!
+  updateVacuna(input: UpdateVacunaInput!): Vacuna!
+}
+
+type Query {
+  alertas: [Alerta!]!
+  alertasByUsuario(usuarioId: Int!): [Alerta!]!
+  cita(id: Int!): CitaMedica!
+  citas: [CitaMedica!]!
+  citasByUsuario(usuarioId: Int!): [CitaMedica!]!
+  familiares: [Familiar!]!
+  familiaresByUsuario(usuarioId: Int!): [Familiar!]!
+  medicamento(id: Int!): Medicamento!
+  medicamentos: [Medicamento!]!
+  medicamentosByUsuario(usuarioId: Int!): [Medicamento!]!
+  recordatorios: [Recordatorio!]!
+  recordatoriosByUsuario(usuarioId: Int!): [Recordatorio!]!
+  usuario(id: Int!): Usuario!
+  usuarios: [Usuario!]!
+  vacuna(id: Int!): Vacuna!
+  vacunas: [Vacuna!]!
+  vacunasByUsuario(usuarioId: Int!): [Vacuna!]!
+}
+
+type Recordatorio {
+  created_at: DateTime!
+  estado: EstadoRecordatorio!
+  fecha_recordatorio: DateTime!
+  id: Int!
+  referencia_id: Int!
+  tipo: TipoRecordatorio!
+  usuario: Usuario!
+  usuario_id: Int!
+}
+
+enum RolUsuario {
+  FAMILIAR
+  USUARIO
+}
+
+enum TipoRecordatorio {
+  CITA
+  MEDICAMENTO
+  VACUNA
+}
+
+input UpdateCitaInput {
+  especialidad: String
+  estado: EstadoCita = PENDIENTE
+  fecha_hora: String
+  id: Int!
+  lugar: String
+  medico: String
+  notas: String
+  usuario_id: Int
+}
+
+input UpdateMedicamentoInput {
+  dosis: String
+  fecha_fin: String
+  fecha_inicio: String
+  frecuencia: String
+  id: Int!
+  nombre: String
+  notas: String
+  usuario_id: Int
+}
+
+input UpdateUsuarioInput {
+  apellido: String
+  contrasena: String
+  correo: String
+  fecha_nacimiento: String
+  id: Int!
+  nombre: String
+  rol: RolUsuario = USUARIO
+}
+
+input UpdateVacunaInput {
+  dosis_aplicada: String
+  fecha_aplicacion: String
+  id: Int!
+  nombre: String
+  notas: String
+  proxima_dosis_fecha: String
+  usuario_id: Int
+}
+
+type Usuario {
+  alertas: [Alerta!]
+  apellido: String!
+  citas: [CitaMedica!]
+  correo: String!
+  created_at: DateTime!
+  fecha_nacimiento: String!
+  id: Int!
+  medicamentos: [Medicamento!]
+  nombre: String!
+  recordatorios: [Recordatorio!]
+  rol: RolUsuario!
+  updated_at: DateTime!
+  vacunas: [Vacuna!]
+}
+
+type Vacuna {
+  created_at: DateTime!
+  dosis_aplicada: String!
+  fecha_aplicacion: String!
+  id: Int!
+  nombre: String!
+  notas: String
+  proxima_dosis_fecha: String
+  updated_at: DateTime!
+  usuario: Usuario!
+  usuario_id: Int!
+}
