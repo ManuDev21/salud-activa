@@ -7,6 +7,9 @@ async function bootstrap() {
   app.enableCors({ origin: '*', credentials: true });
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
+  const expressApp = app.getHttpAdapter().getInstance();
+  expressApp.get('/', (req, res) => res.json({ status: 'ok', service: 'Salud Activa API' }));
+
   const port = process.env.PORT || 3000;
   await app.listen(port, '0.0.0.0');
   console.log(`🚀 Salud Activa API running on port ${port}`);
