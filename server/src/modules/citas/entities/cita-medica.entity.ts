@@ -36,7 +36,7 @@ export class CitaMedica {
   lugar: string;
 
   @Field()
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp' })
   fecha_hora: Date;
 
   @Field(() => EstadoCita)

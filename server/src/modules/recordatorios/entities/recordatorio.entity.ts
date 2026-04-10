@@ -39,7 +39,7 @@ export class Recordatorio {
   referencia_id: number;
 
   @Field()
-  @Column({ type: 'datetime' })
+  @Column({ type: 'timestamp' })
   fecha_recordatorio: Date;
 
   @Field(() => EstadoRecordatorio)
