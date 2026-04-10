@@ -20,20 +20,25 @@ import { AuthModule } from './modules/auth/auth.module';
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: (config: ConfigService) => ({
-        type: 'mariadb',
-        host: config.get('MYSQL_HOST') || config.get('DB_HOST', 'localhost'),
-        port: parseInt(config.get('MYSQL_PORT') || config.get('DB_PORT', '3308')),
-        username: config.get('MYSQL_USER') || config.get('DB_USER', 'root'),
-        password: config.get('MYSQL_PASSWORD') || config.get('DB_PASSWORD', 'root'),
-        database: config.get('MYSQL_DATABASE') || config.get('DB_NAME', 'smarthealth'),
-        entities: [join(__dirname, '**', '*.entity.{ts,js}')],
-        synchronize: config.get('DB_SYNC', 'false') === 'true',
-      }),
+      useFactory: (config: ConfigService) => {
+        const isProduction = config.get('NODE_ENV') === 'production' || config.get('POSTGRES_HOST');
+        const dbConfig: any = {
+          type: isProduction ? 'postgres' : 'mariadb',
+          host: config.get('POSTGRES_HOST') || config.get('DB_HOST', 'localhost'),
+          port: parseInt(config.get('POSTGRES_PORT') || config.get('DB_PORT', '3308')),
+          username: config.get('POSTGRES_USER') || config.get('DB_USER', 'root'),
+          password: config.get('POSTGRES_PASSWORD') || config.get('DB_PASSWORD', 'root'),
+          database: config.get('POSTGRES_DATABASE') || config.get('DB_NAME', 'smarthealth'),
+          entities: [join(__dirname, '**', '*.entity.{ts,js}')],
+          synchronize: config.get('DB_SYNC', 'false') === 'true',
+          ssl: isProduction ? { rejectUnauthorized: false } : false,
+        };
+        return dbConfig as any;
+      },
     }),
     GraphQLModule.forRoot<ApolloDriverConfig>({
       driver: ApolloDriver,
-      autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
+      autoSchemaFile: true,
       sortSchema: true,
       playground: true,
     }),

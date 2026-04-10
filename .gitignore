@@ -2,3 +2,9 @@ node_modules
 dist
 .env
 *.log
+
+# Local Netlify folder
+.netlify
+
+.vercel
+.env*.local
